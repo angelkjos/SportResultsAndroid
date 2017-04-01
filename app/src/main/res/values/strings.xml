@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">Live_Results</string>
+
+    <!--Navigation Titles-->
     <string name="title_all_teams">All Teams</string>
     <string name="title_live_results">Live Results</string>
     <string name="title_fixtures">Fixtures</string>
+
+    <!--Errors-->
+    <string name="error">Error</string>
+    <string name="please_try_again">Please try again.</string>
+
 </resources>

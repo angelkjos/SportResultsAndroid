@@ -3,13 +3,15 @@ package com.angelkjoseski.live_results.features.common;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.angelkjoseski.live_results.R;
+import com.angelkjoseski.live_results.mvp.SportResults;
 
-public class SportResultsActivity extends AppCompatActivity {
+public class SportResultsActivity extends AppCompatActivity implements SportResults.View {
 
     private TextView mTextMessage;
 
@@ -43,5 +45,20 @@ public class SportResultsActivity extends AppCompatActivity {
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+    }
+
+    @Override
+    public void showLoading(boolean show) {
+        // TODO: Implement loading spinner.
+    }
+
+    @Override
+    public void showMessage(String message, String description) {
+        new AlertDialog.Builder(this)
+                .setTitle(message)
+                .setMessage(description)
+                .setPositiveButton("OK", null)
+                .create()
+                .show();
     }
 }

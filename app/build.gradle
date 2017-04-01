@@ -25,7 +25,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
-            buildConfigField "String", "SERVER_URL", '"http://localhost:8080"'
+            buildConfigField "String", "SERVER_URL", '"http://localhost:8080/"'
         }
     }
 }
@@ -35,8 +35,11 @@ ext {
     butterknifeLibVersion = '8.5.1'
     retrofitLibVersion = '2.2.0'
     okHttpLibVersion = '3.6.0'
+    rxJavaLibVersion = '2.0.1'
     stethoLibVersion = '1.4.2'
     daggerLibVersion = '2.10'
+    gsonLibVersion = '2.7'
+    glideLibVersion = '3.7.0'
 }
 
 dependencies {
@@ -51,13 +54,15 @@ dependencies {
     // UI libraries
     compile "com.jakewharton:butterknife:${butterknifeLibVersion}"
     annotationProcessor "com.jakewharton:butterknife-compiler:${butterknifeLibVersion}"
-    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile "com.github.bumptech.glide:glide:${glideLibVersion}"
 
     // Network libraries
     compile "com.squareup.retrofit2:retrofit:${retrofitLibVersion}"
     compile "com.squareup.retrofit2:converter-gson:${retrofitLibVersion}"
     compile "com.squareup.okhttp3:okhttp:${okHttpLibVersion}"
-    compile 'com.google.code.gson:gson:2.7'
+    compile "io.reactivex.rxjava2:rxandroid:${rxJavaLibVersion}"
+    compile "io.reactivex.rxjava2:rxjava:${rxJavaLibVersion}"
+    compile "com.google.code.gson:gson:${gsonLibVersion}"
     compile "com.facebook.stetho:stetho:${stethoLibVersion}"
     compile "com.facebook.stetho:stetho-okhttp3:${stethoLibVersion}"
 

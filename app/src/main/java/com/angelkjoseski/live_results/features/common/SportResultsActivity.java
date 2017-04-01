@@ -3,37 +3,36 @@ package com.angelkjoseski.live_results.features.common;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.angelkjoseski.live_results.R;
+import com.angelkjoseski.live_results.features.teams.AllTeamsFragment;
 import com.angelkjoseski.live_results.mvp.SportResults;
 
 public class SportResultsActivity extends AppCompatActivity implements SportResults.View {
-
-    private TextView mTextMessage;
 
     private BottomNavigationView.OnNavigationItemSelectedListener
             mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            Fragment fragment = null;
             switch (item.getItemId()) {
                 case R.id.navigation_teams:
-                    mTextMessage.setText(R.string.title_all_teams);
-                    return true;
+                    fragment = new AllTeamsFragment();
+                    break;
                 case R.id.navigation_live_results:
-                    mTextMessage.setText(R.string.title_live_results);
-                    return true;
+                    break;
                 case R.id.navigation_fixtures:
-                    mTextMessage.setText(R.string.title_fixtures);
-                    return true;
+                    break;
                 default:
-                    mTextMessage.setText("Default");
-                    return false;
+                    break;
             }
+            loadContent(fragment);
+            return true;
         }
     };
 
@@ -42,9 +41,25 @@ public class SportResultsActivity extends AppCompatActivity implements SportResu
         super.onCreate(savedInstanceState);
         setContentView(R.layout.football_results_activity);
 
-        mTextMessage = (TextView) findViewById(R.id.message);
+        loadContent(new AllTeamsFragment());
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+    }
+
+    /**
+     * Will load the given fragment in the main content area.
+     * @param fragment The fragment to show.
+     */
+    private void loadContent(Fragment fragment) {
+        if (fragment == null) {
+            return;
+        }
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.content, fragment)
+                .commitNow();
     }
 
     @Override

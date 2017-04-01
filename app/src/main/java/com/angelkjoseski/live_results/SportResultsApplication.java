@@ -60,7 +60,7 @@ public class SportResultsApplication extends Application {
 
     }
 
-    public static ApplicationComponent getApplicationComponent() {
+    public ApplicationComponent getApplicationComponent() {
         return getInstance().applicationComponent;
     }
 }

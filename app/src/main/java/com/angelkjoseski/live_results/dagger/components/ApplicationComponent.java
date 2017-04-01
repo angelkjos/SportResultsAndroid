@@ -3,6 +3,7 @@ package com.angelkjoseski.live_results.dagger.components;
 import com.angelkjoseski.live_results.SportResultsApplication;
 import com.angelkjoseski.live_results.dagger.modules.ImageLoadingModule;
 import com.angelkjoseski.live_results.dagger.modules.NetworkingModule;
+import com.angelkjoseski.live_results.dagger.modules.TeamsModule;
 
 import javax.inject.Singleton;
 
@@ -28,5 +29,19 @@ public interface ApplicationComponent {
      * @param sportResultsApplication instance of application
      */
     void inject(SportResultsApplication sportResultsApplication);
+
+    /**
+     * Returns a new Dagger 2 component that inherits all dependencies from this component and
+     * adds dependencies provided by {@link TeamsModule}. Returned component is
+     * used to inject {@link com.angelkjoseski.live_results.features.teams.AllTeamsFragment} dependencies.
+     *
+     * @param teamsModule module that provides fragment dependencies
+     * @return new component with My Team dependencies added
+     * @see TeamsComponent
+     * @see TeamsModule
+     * @see com.angelkjoseski.live_results.mvp.MyTeams
+     * @see com.angelkjoseski.live_results.features.teams.AllTeamsFragment
+     */
+    TeamsComponent plus(TeamsModule teamsModule);
 
 }

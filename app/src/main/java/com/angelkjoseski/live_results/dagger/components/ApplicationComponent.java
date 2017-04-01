@@ -4,6 +4,7 @@ import com.angelkjoseski.live_results.SportResultsApplication;
 import com.angelkjoseski.live_results.dagger.modules.ImageLoadingModule;
 import com.angelkjoseski.live_results.dagger.modules.NetworkingModule;
 import com.angelkjoseski.live_results.dagger.modules.TeamsModule;
+import com.angelkjoseski.live_results.mvp.Teams;
 
 import javax.inject.Singleton;
 
@@ -39,7 +40,7 @@ public interface ApplicationComponent {
      * @return new component with My Team dependencies added
      * @see TeamsComponent
      * @see TeamsModule
-     * @see com.angelkjoseski.live_results.mvp.MyTeams
+     * @see Teams
      * @see com.angelkjoseski.live_results.features.teams.AllTeamsFragment
      */
     TeamsComponent plus(TeamsModule teamsModule);

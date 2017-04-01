@@ -1,14 +1,14 @@
 package com.angelkjoseski.live_results.dagger.modules;
 
-import com.angelkjoseski.live_results.mvp.MyTeams;
-import com.angelkjoseski.live_results.mvp.interactors.MyTeamsInteractor;
-import com.angelkjoseski.live_results.mvp.presenters.MyTeamsPresenter;
+import com.angelkjoseski.live_results.mvp.Teams;
+import com.angelkjoseski.live_results.mvp.interactors.TeamsInteractor;
+import com.angelkjoseski.live_results.mvp.presenters.TeamsPresenter;
 
 import dagger.Module;
 import dagger.Provides;
 
 /**
- * Dagger module that provides dependencies for {@link com.angelkjoseski.live_results.mvp.MyTeams} screen.
+ * Dagger module that provides dependencies for {@link Teams} screen.
  */
 @Module
 public class TeamsModule {
@@ -16,24 +16,24 @@ public class TeamsModule {
     /**
      * Reference to MyTeams view implementation.
      */
-    private MyTeams.View view;
+    private Teams.View view;
 
-    public TeamsModule(MyTeams.View view) {
+    public TeamsModule(Teams.View view) {
         this.view = view;
     }
 
     @Provides
-    public MyTeams.Interactor provideInteractor(MyTeamsInteractor myTeamsInteractor) {
-        return myTeamsInteractor;
+    public Teams.Interactor provideInteractor(TeamsInteractor teamsInteractor) {
+        return teamsInteractor;
     }
 
     @Provides
-    public MyTeams.View provideView() {
+    public Teams.View provideView() {
         return view;
     }
 
     @Provides
-    public MyTeams.Presenter providePresenter(MyTeamsPresenter myTeamPresenter) {
+    public Teams.Presenter providePresenter(TeamsPresenter myTeamPresenter) {
         return myTeamPresenter;
     }
 }

@@ -2,7 +2,7 @@ package com.angelkjoseski.live_results.mvp.presenters;
 
 import com.angelkjoseski.live_results.model.ErrorResponse;
 import com.angelkjoseski.live_results.model.Team;
-import com.angelkjoseski.live_results.mvp.MyTeams;
+import com.angelkjoseski.live_results.mvp.Teams;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import io.reactivex.disposables.Disposable;
 /**
  * Presenter responsible for UI logic in 'MyTeams' view.
  */
-public class MyTeamsPresenter extends PresenterTemplate<MyTeams.View, MyTeams.Interactor> implements MyTeams.Presenter {
+public class TeamsPresenter extends PresenterTemplate<Teams.View, Teams.Interactor> implements Teams.Presenter {
 
     /**
      * Constructor for injecting View and Interactor.
@@ -23,7 +23,7 @@ public class MyTeamsPresenter extends PresenterTemplate<MyTeams.View, MyTeams.In
      * @param interactor interactor reference
      */
     @Inject
-    public MyTeamsPresenter(MyTeams.View view, MyTeams.Interactor interactor) {
+    public TeamsPresenter(Teams.View view, Teams.Interactor interactor) {
         super(view, interactor);
     }
 
@@ -47,7 +47,7 @@ public class MyTeamsPresenter extends PresenterTemplate<MyTeams.View, MyTeams.In
 
             @Override
             public void onError(Throwable e) {
-                MyTeamsPresenter.this.onError(new ErrorResponse());
+                TeamsPresenter.this.onError(new ErrorResponse());
             }
 
             @Override

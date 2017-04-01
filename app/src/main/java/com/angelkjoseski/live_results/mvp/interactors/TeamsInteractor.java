@@ -2,7 +2,7 @@ package com.angelkjoseski.live_results.mvp.interactors;
 
 import com.angelkjoseski.live_results.model.Team;
 import com.angelkjoseski.live_results.model.TeamList;
-import com.angelkjoseski.live_results.mvp.MyTeams;
+import com.angelkjoseski.live_results.mvp.Teams;
 import com.angelkjoseski.live_results.networking.ApiService;
 
 import java.util.List;
@@ -18,7 +18,7 @@ import retrofit2.Retrofit;
 /**
  * Interactor responsible for business-logic in loading all teams.
  */
-public class MyTeamsInteractor extends InteractorTemplate<TeamList> implements MyTeams.Interactor {
+public class TeamsInteractor extends InteractorTemplate<TeamList> implements Teams.Interactor {
 
     /**
      * Constructor for injecting REST API service and Retrofit instance.
@@ -27,7 +27,7 @@ public class MyTeamsInteractor extends InteractorTemplate<TeamList> implements M
      * @param retrofit   singleton Retrofit instance
      */
     @Inject
-    public MyTeamsInteractor(ApiService apiService, Retrofit retrofit) {
+    public TeamsInteractor(ApiService apiService, Retrofit retrofit) {
         super(apiService, retrofit);
     }
 

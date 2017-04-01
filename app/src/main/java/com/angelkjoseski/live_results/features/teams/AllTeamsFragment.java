@@ -12,7 +12,7 @@ import com.angelkjoseski.live_results.SportResultsApplication;
 import com.angelkjoseski.live_results.dagger.modules.TeamsModule;
 import com.angelkjoseski.live_results.features.common.SportResultsFragment;
 import com.angelkjoseski.live_results.model.Team;
-import com.angelkjoseski.live_results.mvp.MyTeams;
+import com.angelkjoseski.live_results.mvp.Teams;
 import com.angelkjoseski.live_results.networking.images.ImageLoadingService;
 
 import java.util.List;
@@ -25,13 +25,13 @@ import butterknife.ButterKnife;
 /**
  * Fragment for showing all teams, including the users favourites.
  */
-public class AllTeamsFragment extends SportResultsFragment implements MyTeams.View {
+public class AllTeamsFragment extends SportResultsFragment implements Teams.View {
 
     @BindView(R.id.textView)
     TextView textView;
 
     @Inject
-    MyTeams.Presenter presenter;
+    Teams.Presenter presenter;
     @Inject
     ImageLoadingService imageLoadingService;
 

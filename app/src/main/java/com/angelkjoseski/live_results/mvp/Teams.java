@@ -9,7 +9,7 @@ import io.reactivex.Observable;
 /**
  * Model - View - Presenter interfaces for 'Teams' screen.
  */
-public interface MyTeams {
+public interface Teams {
 
 
     /**

@@ -4,8 +4,6 @@ import com.angelkjoseski.live_results.mvp.MyTeams;
 import com.angelkjoseski.live_results.mvp.interactors.MyTeamsInteractor;
 import com.angelkjoseski.live_results.mvp.presenters.MyTeamsPresenter;
 
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
 
@@ -25,19 +23,16 @@ public class TeamsModule {
     }
 
     @Provides
-    @Singleton
     public MyTeams.Interactor provideInteractor(MyTeamsInteractor myTeamsInteractor) {
         return myTeamsInteractor;
     }
 
     @Provides
-    @Singleton
     public MyTeams.View provideView() {
         return view;
     }
 
     @Provides
-    @Singleton
     public MyTeams.Presenter providePresenter(MyTeamsPresenter myTeamPresenter) {
         return myTeamPresenter;
     }

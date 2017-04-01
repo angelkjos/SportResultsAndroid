@@ -58,8 +58,10 @@ dependencies {
 
     // Network libraries
     compile "com.squareup.retrofit2:retrofit:${retrofitLibVersion}"
+    compile "com.squareup.retrofit2:adapter-rxjava2:${retrofitLibVersion}"
     compile "com.squareup.retrofit2:converter-gson:${retrofitLibVersion}"
     compile "com.squareup.okhttp3:okhttp:${okHttpLibVersion}"
+    compile "com.squareup.okhttp3:logging-interceptor:${okHttpLibVersion}"
     compile "io.reactivex.rxjava2:rxandroid:${rxJavaLibVersion}"
     compile "io.reactivex.rxjava2:rxjava:${rxJavaLibVersion}"
     compile "com.google.code.gson:gson:${gsonLibVersion}"

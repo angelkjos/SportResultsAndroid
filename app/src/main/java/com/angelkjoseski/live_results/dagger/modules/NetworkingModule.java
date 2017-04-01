@@ -9,7 +9,9 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
@@ -21,7 +23,11 @@ public class NetworkingModule {
     @Provides
     @Singleton
     public OkHttpClient provideClient() {
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
         OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
+        clientBuilder.addInterceptor(interceptor);
 
         if (BuildConfig.DEBUG) {
             //Make sure this interceptor is added last to capture all modifications by
@@ -38,6 +44,7 @@ public class NetworkingModule {
         return new Retrofit.Builder()
                 .baseUrl(BuildConfig.SERVER_URL)
                 .client(client)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }

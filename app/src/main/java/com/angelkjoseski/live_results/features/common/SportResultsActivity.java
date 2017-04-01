@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.angelkjoseski.live_results.R;
+import com.angelkjoseski.live_results.features.live.LiveResultsFragment;
 import com.angelkjoseski.live_results.features.teams.AllTeamsFragment;
 import com.angelkjoseski.live_results.mvp.SportResults;
 
@@ -25,6 +26,7 @@ public class SportResultsActivity extends AppCompatActivity implements SportResu
                     fragment = new AllTeamsFragment();
                     break;
                 case R.id.navigation_live_results:
+                    fragment = new LiveResultsFragment();
                     break;
                 case R.id.navigation_fixtures:
                     break;

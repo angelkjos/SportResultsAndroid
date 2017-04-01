@@ -2,6 +2,7 @@ package com.angelkjoseski.live_results.dagger.components;
 
 import com.angelkjoseski.live_results.SportResultsApplication;
 import com.angelkjoseski.live_results.dagger.modules.ImageLoadingModule;
+import com.angelkjoseski.live_results.dagger.modules.LiveResultsModule;
 import com.angelkjoseski.live_results.dagger.modules.NetworkingModule;
 import com.angelkjoseski.live_results.dagger.modules.TeamsModule;
 import com.angelkjoseski.live_results.mvp.Teams;
@@ -44,5 +45,20 @@ public interface ApplicationComponent {
      * @see com.angelkjoseski.live_results.features.teams.AllTeamsFragment
      */
     TeamsComponent plus(TeamsModule teamsModule);
+
+    /**
+     * Returns a new Dagger 2 component that inherits all dependencies from this component and
+     * adds dependencies provided by {@link com.angelkjoseski.live_results.dagger.modules.LiveResultsModule}.
+     * Returned component is used to inject {@link com.angelkjoseski.live_results.features.live.LiveResultsFragment}
+     * dependencies.
+     *
+     * @param liveResultsModule module that provides fragment dependencies
+     * @return new component with dependencies added
+     * @see LiveResultsComponent
+     * @see LiveResultsModule
+     * @see com.angelkjoseski.live_results.mvp.LiveResults
+     * @see com.angelkjoseski.live_results.features.live.LiveResultsFragment
+     */
+    LiveResultsComponent plus(LiveResultsModule liveResultsModule);
 
 }

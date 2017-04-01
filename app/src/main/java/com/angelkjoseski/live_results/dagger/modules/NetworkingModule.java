@@ -2,6 +2,7 @@ package com.angelkjoseski.live_results.dagger.modules;
 
 import com.angelkjoseski.live_results.BuildConfig;
 import com.angelkjoseski.live_results.networking.ApiService;
+import com.angelkjoseski.live_results.util.GsonUtils;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 
 import javax.inject.Singleton;
@@ -45,7 +46,7 @@ public class NetworkingModule {
                 .baseUrl(BuildConfig.SERVER_URL)
                 .client(client)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(GsonUtils.GSON))
                 .build();
     }
 

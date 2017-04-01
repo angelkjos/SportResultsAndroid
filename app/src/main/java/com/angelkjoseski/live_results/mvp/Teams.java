@@ -17,7 +17,6 @@ public interface Teams {
      */
     interface Interactor {
         Observable<List<Team>> getAllTeams();
-        void cancel();
     }
 
     /**

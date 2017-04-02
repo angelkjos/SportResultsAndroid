@@ -5,6 +5,8 @@ import com.angelkjoseski.live_results.model.ErrorResponse;
 import com.angelkjoseski.live_results.model.Fixture;
 import com.angelkjoseski.live_results.features.live.LiveResults;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -33,6 +35,13 @@ public class LiveResultsPresenter extends PresenterTemplate<LiveResults.View, Li
     @Override
     public void onCreated() {
         loadLiveMatches();
+        setDateOnView();
+    }
+
+    private void setDateOnView() {
+        Date dateNow = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        view.setDate(simpleDateFormat.format(dateNow));
     }
 
     private void loadLiveMatches() {

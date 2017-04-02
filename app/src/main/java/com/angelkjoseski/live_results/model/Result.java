@@ -32,4 +32,8 @@ public class Result {
     public void setFinished(boolean finished) {
         this.finished = finished;
     }
+
+    public String getScoreString() {
+        return String.format("%d : %d", scoreHome, scoreAway);
+    }
 }

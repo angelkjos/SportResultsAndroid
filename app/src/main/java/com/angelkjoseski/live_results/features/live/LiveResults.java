@@ -29,6 +29,7 @@ public interface LiveResults {
      */
     interface View extends SportResults.View {
         void showLiveResults(List<Fixture> fixtures);
+        void setDate(String date);
     }
 
     /**

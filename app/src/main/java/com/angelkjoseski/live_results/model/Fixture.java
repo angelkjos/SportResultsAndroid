@@ -13,6 +13,9 @@ public class Fixture {
     private Date startTime;
     private Result result;
 
+    private Team teamHome;
+    private Team teamAway;
+
     public long getFixtureId() {
         return fixtureId;
     }
@@ -51,5 +54,21 @@ public class Fixture {
 
     public void setResult(Result result) {
         this.result = result;
+    }
+
+    public Team getTeamHome() {
+        return teamHome;
+    }
+
+    public void setTeamHome(Team teamHome) {
+        this.teamHome = teamHome;
+    }
+
+    public Team getTeamAway() {
+        return teamAway;
+    }
+
+    public void setTeamAway(Team teamAway) {
+        this.teamAway = teamAway;
     }
 }

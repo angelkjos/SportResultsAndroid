@@ -1,12 +1,14 @@
 package com.angelkjoseski.live_results.features.upcomingfixtures.interactor;
 
 import com.angelkjoseski.live_results.features.common.interactor.InteractorTemplate;
+import com.angelkjoseski.live_results.features.upcomingfixtures.UpcomingFixtures;
 import com.angelkjoseski.live_results.model.Fixture;
 import com.angelkjoseski.live_results.model.FixtureList;
-import com.angelkjoseski.live_results.features.upcomingfixtures.UpcomingFixtures;
+import com.angelkjoseski.live_results.model.Team;
+import com.angelkjoseski.live_results.service.FavouriteService;
 import com.angelkjoseski.live_results.service.networking.ApiService;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -24,7 +26,7 @@ import retrofit2.Retrofit;
  */
 public class UpcomingFixturesInteractor extends InteractorTemplate<FixtureList> implements UpcomingFixtures.Interactor {
 
-    private static final long CONSTANT_ID = 12;
+    private final FavouriteService favouriteService;
 
     /**
      * Constructor for injecting REST API service and Retrofit instance.
@@ -33,63 +35,82 @@ public class UpcomingFixturesInteractor extends InteractorTemplate<FixtureList> 
      * @param retrofit   singleton Retrofit instance
      */
     @Inject
-    public UpcomingFixturesInteractor(ApiService apiService, Retrofit retrofit) {
+    public UpcomingFixturesInteractor(ApiService apiService, Retrofit retrofit, FavouriteService favouriteService) {
         super(apiService, retrofit);
+        this.favouriteService = favouriteService;
     }
 
     @Override
     public Observable<List<Fixture>> getAllUpcomingFixtures() {
-        return apiService
-                .getAllFixtures()
-                .subscribeOn(Schedulers.newThread())
+        return apiService.getAllFixtures()
+                .subscribeOn(Schedulers.io())
                 .map(new Function<FixtureList, List<Fixture>>() {
                     @Override
                     public List<Fixture> apply(FixtureList fixtureList) throws Exception {
-                        return fixtureList.getFixtures();
-                    }
-                })
-                .observeOn(AndroidSchedulers.mainThread());
-    }
-
-    @Override
-    public Observable<List<Fixture>> getUpcomingFixturesForFavouriteTeams() {
-
-        // TODO: create 'Favourites Service' to load these IDs.
-        final List<Long> favouredTeamIds = new ArrayList<>();
-        favouredTeamIds.add(CONSTANT_ID);
-
-        if (favouredTeamIds == null || favouredTeamIds.size() == 0) {
-            // No favourite teams
-            return Observable.just(new ArrayList<Fixture>())
-                    .map(new Function<ArrayList<Fixture>, List<Fixture>>() {
-                        @Override
-                        public List<Fixture> apply(ArrayList<Fixture> fixtures) throws Exception {
-                            throw new IllegalArgumentException("No favourites teams yet.");
-                        }
-                    });
-        }
-
-        return apiService
-                .getAllFixtures()
-                .subscribeOn(Schedulers.newThread())
-                .map(new Function<FixtureList, List<Fixture>>() {
-                    @Override
-                    public List<Fixture> apply(FixtureList fixtureList) throws Exception {
-                        return fixtureList.getFixtures();
+                        return  fixtureList.getFixtures();
                     }
                 })
                 .flatMap(new Function<List<Fixture>, ObservableSource<Fixture>>() {
                     @Override
                     public ObservableSource<Fixture> apply(List<Fixture> fixtures) throws Exception {
-                        return Observable
-                                .fromIterable(fixtures)
-                                .filter(new Predicate<Fixture>() {
+                        return Observable.fromIterable(fixtures);
+                    }
+                })
+                .filter(new Predicate<Fixture>() {
+                    @Override
+                    public boolean test(Fixture fixture) throws Exception {
+                        return new Date().before(fixture.getStartTime());
+                    }
+                })
+                .toList()
+                .toObservable()
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<List<Fixture>> getUpcomingFixturesForFavouriteTeams() {
+        return apiService.getAllFixtures()
+                .subscribeOn(Schedulers.io())
+                .map(new Function<FixtureList, List<Fixture>>() {
+                    @Override
+                    public List<Fixture> apply(FixtureList fixtureList) throws Exception {
+                        return  fixtureList.getFixtures();
+                    }
+                })
+                .flatMap(new Function<List<Fixture>, ObservableSource<Fixture>>() {
+                    @Override
+                    public ObservableSource<Fixture> apply(List<Fixture> fixtures) throws Exception {
+                        return Observable.fromIterable(fixtures);
+                    }
+                })
+                .flatMap(new Function<Fixture, ObservableSource<Fixture>>() {
+                    @Override
+                    public ObservableSource<Fixture> apply(final Fixture fixture) throws Exception {
+                        return favouriteService.getFavouriteTeams()
+                                .flatMap(new Function<List<Team>, ObservableSource<Fixture>>() {
                                     @Override
-                                    public boolean test(Fixture fixture) throws Exception {
-                                        return (favouredTeamIds.contains(fixture.getTeamIdAway())
-                                                || favouredTeamIds.contains(fixture.getTeamIdHome()));
+                                    public ObservableSource<Fixture> apply(List<Team> favouriteTeams) throws Exception {
+                                        Team tempTeamAway = new Team(fixture.getTeamIdAway());
+                                        Team tempTeamHome = new Team(fixture.getTeamIdHome());
+                                        if (favouriteTeams.contains(tempTeamAway) || favouriteTeams.contains(tempTeamHome)) {
+                                            return Observable.just(fixture);
+                                        } else {
+                                            return Observable.just(new Fixture());
+                                        }
                                     }
                                 });
+                    }
+                })
+                .filter(new Predicate<Fixture>() {
+                    @Override
+                    public boolean test(Fixture fixture) throws Exception {
+                        return fixture.getFixtureId() > 0;
+                    }
+                })
+                .filter(new Predicate<Fixture>() {
+                    @Override
+                    public boolean test(Fixture fixture) throws Exception {
+                        return new Date().before(fixture.getStartTime());
                     }
                 })
                 .toList()

@@ -31,6 +31,14 @@ public class TeamsPresenter extends PresenterTemplate<Teams.View, Teams.Interact
     @Override
     public void onCreated() {
         loadAllTeams();
+        view.showMessage(null, "Long-Click a team to add to favourites.");
+    }
+
+    @Override
+    public void onTeamFavoriteClicked(Team team) {
+        interactor.addTeamToFavourites(team);
+        view.showMessage("Favourite", "Team was added to favourites.");
+        loadAllTeams();
     }
 
     private void loadAllTeams() {

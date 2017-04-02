@@ -53,7 +53,8 @@ public class StorageFavouriteService implements FavouriteService {
             return new ArrayList<>();
         }
 
-        Type listType = new TypeToken<ArrayList<Team>>(){}.getType();
+        Type listType = new TypeToken<ArrayList<Team>>() {
+        }.getType();
         List<Team> teamList = GsonUtils.GSON.fromJson(json, listType);
 
         return teamList;

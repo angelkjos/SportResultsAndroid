@@ -28,6 +28,7 @@ public class TeamsAdapter extends RecyclerView.Adapter<TeamsAdapter.ViewHolder> 
 
         @BindView(R.id.teamNameTextView) TextView teamName;
         @BindView(R.id.teamBannerImageView) ImageView teamBanner;
+        @BindView(R.id.favouriteIcon) ImageView favouriteIcon;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -53,6 +54,7 @@ public class TeamsAdapter extends RecyclerView.Adapter<TeamsAdapter.ViewHolder> 
         Team team = teams.get(position);
         holder.teamName.setText(team.getTeamName());
         imageLoadingService.loadInto(team.getBannerUrl(), R.mipmap.ic_launcher, holder.teamBanner);
+        holder.favouriteIcon.setVisibility(team.isFavourite() ? View.VISIBLE : View.GONE);
     }
 
     @Override

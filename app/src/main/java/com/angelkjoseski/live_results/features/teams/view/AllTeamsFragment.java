@@ -8,17 +8,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.angelkjoseski.live_results.R;
 import com.angelkjoseski.live_results.SportResultsApplication;
-import com.angelkjoseski.live_results.features.teams.injection.TeamsModule;
 import com.angelkjoseski.live_results.features.common.view.SportResultsFragment;
-import com.angelkjoseski.live_results.model.Team;
 import com.angelkjoseski.live_results.features.teams.Teams;
+import com.angelkjoseski.live_results.features.teams.injection.TeamsModule;
+import com.angelkjoseski.live_results.model.Team;
 import com.angelkjoseski.live_results.service.networking.images.ImageLoadingService;
 import com.angelkjoseski.live_results.util.view.RecyclerTouchListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -39,6 +39,8 @@ public class AllTeamsFragment extends SportResultsFragment implements Teams.View
     Teams.Presenter presenter;
     @Inject
     ImageLoadingService imageLoadingService;
+
+    private List<Team> teams = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,18 +71,20 @@ public class AllTeamsFragment extends SportResultsFragment implements Teams.View
                         new RecyclerTouchListener.ClickListener() {
                             @Override
                             public void onClick(View view, int position) {
-                                Toast.makeText(getSportResultsActivity(), "Click", Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
                             public void onLongClick(View view, int position) {
-                                Toast.makeText(getSportResultsActivity(), "Long-Click", Toast.LENGTH_SHORT).show();
+                                presenter.onTeamFavoriteClicked(teams.get(position));
                             }
                         }));
+        adapter = new TeamsAdapter(teams, imageLoadingService);
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
     public void showAllTeams(List<Team> teams) {
+        this.teams = teams;
         adapter = new TeamsAdapter(teams, imageLoadingService);
         recyclerView.setAdapter(adapter);
     }

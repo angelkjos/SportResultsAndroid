@@ -7,7 +7,7 @@ import java.util.Date;
  */
 public class Fixture {
 
-    private long fixtureId;
+    private long fixtureId = -1;
     private long teamIdHome;
     private long teamIdAway;
     private Date startTime;

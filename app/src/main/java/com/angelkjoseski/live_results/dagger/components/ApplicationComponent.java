@@ -5,6 +5,7 @@ import com.angelkjoseski.live_results.dagger.modules.ImageLoadingModule;
 import com.angelkjoseski.live_results.dagger.modules.LiveResultsModule;
 import com.angelkjoseski.live_results.dagger.modules.NetworkingModule;
 import com.angelkjoseski.live_results.dagger.modules.TeamsModule;
+import com.angelkjoseski.live_results.dagger.modules.UpcomingFixturesModule;
 import com.angelkjoseski.live_results.mvp.Teams;
 
 import javax.inject.Singleton;
@@ -61,4 +62,18 @@ public interface ApplicationComponent {
      */
     LiveResultsComponent plus(LiveResultsModule liveResultsModule);
 
+    /**
+     * Returns a new Dagger 2 component that inherits all dependencies from this component and
+     * adds dependencies provided by {@link UpcomingFixturesModule}.
+     * Returned component is used to inject {@link com.angelkjoseski.live_results.features.upcomingfixtures.UpcomingFixturesFragment}
+     * dependencies.
+     *
+     * @param upcomingFixturesModule module that provides fragment dependencies
+     * @return new component with dependencies added
+     * @see UpcomingFixturesComponent
+     * @see UpcomingFixturesModule
+     * @see com.angelkjoseski.live_results.mvp.UpcomingFixtures
+     * @see com.angelkjoseski.live_results.features.upcomingfixtures.UpcomingFixturesFragment
+     */
+    UpcomingFixturesComponent plus(UpcomingFixturesModule upcomingFixturesModule);
 }

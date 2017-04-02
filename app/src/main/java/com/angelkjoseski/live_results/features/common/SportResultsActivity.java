@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import com.angelkjoseski.live_results.R;
 import com.angelkjoseski.live_results.features.live.LiveResultsFragment;
 import com.angelkjoseski.live_results.features.teams.AllTeamsFragment;
+import com.angelkjoseski.live_results.features.upcomingfixtures.UpcomingFixturesFragment;
 import com.angelkjoseski.live_results.mvp.SportResults;
 
 public class SportResultsActivity extends AppCompatActivity implements SportResults.View {
@@ -30,6 +31,7 @@ public class SportResultsActivity extends AppCompatActivity implements SportResu
                     fragment = new LiveResultsFragment();
                     break;
                 case R.id.navigation_fixtures:
+                    fragment = new UpcomingFixturesFragment();
                     break;
                 default:
                     break;

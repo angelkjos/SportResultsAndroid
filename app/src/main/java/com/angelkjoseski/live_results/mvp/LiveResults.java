@@ -15,6 +15,11 @@ public interface LiveResults {
      * 'Live Results' Interactor interface.
      */
     interface Interactor {
+
+        /**
+         * Will fetch the fixtures in which the given team is playing and which are currently running.
+         * @return An Observable emitting a list of all fixtures which correspond to the conditions.
+         */
         Observable<List<Fixture>> getAllCurrentlyRunningFixturesForFavouriteTeams();
     }
 

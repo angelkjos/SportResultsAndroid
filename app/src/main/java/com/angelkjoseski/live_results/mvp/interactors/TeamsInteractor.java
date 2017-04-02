@@ -36,12 +36,12 @@ public class TeamsInteractor extends InteractorTemplate<TeamList> implements Tea
     public Observable<List<Team>> getAllTeams() {
         return apiService.getAllTeams()
                 .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
                 .map(new Function<TeamList, List<Team>>() {
                     @Override
                     public List<Team> apply(TeamList teamList) throws Exception {
                         return teamList.getTeams();
                     }
-                });
+                })
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }

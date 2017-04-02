@@ -33,10 +33,6 @@ public class LiveResultsInteractor extends InteractorTemplate<FixtureList> imple
         super(apiService, retrofit);
     }
 
-    /**
-     * Will fetch the fixtures in which the given team is playing and which are currently running.
-     * @return An Observable emitting a list of all fixtures which correspond to the conditions.
-     */
     @Override
     public Observable<List<Fixture>> getAllCurrentlyRunningFixturesForFavouriteTeams() {
         return apiService

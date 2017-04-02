@@ -18,7 +18,6 @@ import io.reactivex.disposables.Disposable;
 public class LiveResultsPresenter extends PresenterTemplate<LiveResults.View, LiveResults.Interactor> implements
         LiveResults.Presenter {
 
-
     /**
      * Constructor for injecting View and Interactor.
      *

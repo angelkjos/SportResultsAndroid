@@ -12,7 +12,7 @@
         android:name=".SportResultsApplication"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".features.common.SportResultsActivity"
+            android:name=".features.common.view.SportResultsActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

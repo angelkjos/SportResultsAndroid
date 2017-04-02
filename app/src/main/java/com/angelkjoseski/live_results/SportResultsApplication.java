@@ -2,7 +2,7 @@ package com.angelkjoseski.live_results;
 
 import android.app.Application;
 
-import com.angelkjoseski.live_results.dagger.components.ApplicationComponent;
+import com.angelkjoseski.live_results.features.common.injection.ApplicationComponent;
 import com.angelkjoseski.live_results.dagger.components.DaggerApplicationComponent;
 import com.facebook.stetho.Stetho;
 

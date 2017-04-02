@@ -1,8 +1,9 @@
 package com.angelkjoseski.live_results.dagger.components;
 
 import com.angelkjoseski.live_results.TestSportResultsApplication;
-import com.angelkjoseski.live_results.dagger.modules.ImageLoadingModule;
+import com.angelkjoseski.live_results.features.common.injection.ImageLoadingModule;
 import com.angelkjoseski.live_results.dagger.modules.MockNetworkingModule;
+import com.angelkjoseski.live_results.features.common.injection.ApplicationComponent;
 import com.angelkjoseski.live_results.mvp.interactors.LiveResultsInteractorTest;
 
 import javax.inject.Singleton;

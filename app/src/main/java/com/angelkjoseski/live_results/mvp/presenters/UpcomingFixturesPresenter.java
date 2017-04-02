@@ -51,10 +51,12 @@ public class UpcomingFixturesPresenter extends PresenterTemplate<UpcomingFixture
             @Override
             public void onSubscribe(Disposable d) {
                 view.setOnlyFavouredTeamsIndicator(onlyFavouredTeams);
+                view.showLoading(true);
             }
 
             @Override
             public void onNext(List<Fixture> value) {
+                view.showLoading(false);
                 view.showFixtures(value);
             }
 

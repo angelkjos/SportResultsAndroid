@@ -1,6 +1,8 @@
 package com.angelkjoseski.live_results.features.common;
 
 import android.app.ProgressDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -41,10 +43,15 @@ public class SportResultsActivity extends AppCompatActivity implements SportResu
         }
     };
 
+    private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.football_results_activity);
+
+        progressDialog = ProgressDialog.show(this, null, null);
+        progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         loadContent(new AllTeamsFragment());
 
@@ -69,7 +76,11 @@ public class SportResultsActivity extends AppCompatActivity implements SportResu
 
     @Override
     public void showLoading(boolean show) {
-        ProgressDialog.show(this, getString(R.string.loading), getString(R.string.please_wait));
+        if (show) {
+            progressDialog.show();
+        } else {
+            progressDialog.hide();
+        }
     }
 
     @Override

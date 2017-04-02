@@ -39,10 +39,12 @@ public class LiveResultsPresenter extends PresenterTemplate<LiveResults.View, Li
                 .subscribe(new Observer<List<Fixture>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
+                        view.showLoading(true);
                     }
 
                     @Override
                     public void onNext(List<Fixture> value) {
+                        view.showLoading(false);
                         view.showLiveResults(value);
                     }
 

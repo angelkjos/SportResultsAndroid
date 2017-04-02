@@ -23,6 +23,8 @@ import retrofit2.Retrofit;
  */
 public class UpcomingFixturesInteractor extends InteractorTemplate<FixtureList> implements UpcomingFixtures.Interactor {
 
+    private static final long CONSTANT_ID = 12;
+
     /**
      * Constructor for injecting REST API service and Retrofit instance.
      *
@@ -53,7 +55,7 @@ public class UpcomingFixturesInteractor extends InteractorTemplate<FixtureList> 
 
         // TODO: create 'Favourites Service' to load these IDs.
         final List<Long> favouredTeamIds = new ArrayList<>();
-        favouredTeamIds.add(12l);
+        favouredTeamIds.add(CONSTANT_ID);
 
         if (favouredTeamIds == null || favouredTeamIds.size() == 0) {
             // No favourite teams

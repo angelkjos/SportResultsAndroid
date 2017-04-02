@@ -33,15 +33,15 @@ public class TeamsPresenter extends PresenterTemplate<Teams.View, Teams.Interact
     }
 
     private void loadAllTeams() {
-        view.showLoading(true);
         interactor.getAllTeams().subscribe(new Observer<List<Team>>() {
             @Override
             public void onSubscribe(Disposable d) {
-
+                view.showLoading(true);
             }
 
             @Override
             public void onNext(List<Team> value) {
+                view.showLoading(false);
                 view.showAllTeams(value);
             }
 

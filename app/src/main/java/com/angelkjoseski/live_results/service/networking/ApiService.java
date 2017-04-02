@@ -1,4 +1,4 @@
-package com.angelkjoseski.live_results.networking;
+package com.angelkjoseski.live_results.service.networking;
 
 import com.angelkjoseski.live_results.model.FixtureList;
 import com.angelkjoseski.live_results.model.TeamList;

@@ -1,7 +1,7 @@
 package com.angelkjoseski.live_results.features.common.injection;
 
-import com.angelkjoseski.live_results.networking.images.ImageLoadingService;
-import com.angelkjoseski.live_results.networking.images.impl.GlideImageLoadingService;
+import com.angelkjoseski.live_results.service.networking.images.ImageLoadingService;
+import com.angelkjoseski.live_results.service.networking.images.impl.GlideImageLoadingService;
 
 import javax.inject.Singleton;
 

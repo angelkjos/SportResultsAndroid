@@ -4,7 +4,7 @@ import com.angelkjoseski.live_results.features.common.interactor.InteractorTempl
 import com.angelkjoseski.live_results.model.Team;
 import com.angelkjoseski.live_results.model.TeamList;
 import com.angelkjoseski.live_results.features.teams.Teams;
-import com.angelkjoseski.live_results.networking.ApiService;
+import com.angelkjoseski.live_results.service.networking.ApiService;
 
 import java.util.List;
 

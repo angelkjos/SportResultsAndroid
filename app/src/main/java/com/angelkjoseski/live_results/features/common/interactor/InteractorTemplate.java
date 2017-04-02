@@ -1,6 +1,6 @@
 package com.angelkjoseski.live_results.features.common.interactor;
 
-import com.angelkjoseski.live_results.networking.ApiService;
+import com.angelkjoseski.live_results.service.networking.ApiService;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;

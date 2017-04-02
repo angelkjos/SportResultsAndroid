@@ -16,7 +16,7 @@ import com.angelkjoseski.live_results.features.teams.injection.TeamsModule;
 import com.angelkjoseski.live_results.features.common.view.SportResultsFragment;
 import com.angelkjoseski.live_results.model.Team;
 import com.angelkjoseski.live_results.features.teams.Teams;
-import com.angelkjoseski.live_results.networking.images.ImageLoadingService;
+import com.angelkjoseski.live_results.service.networking.images.ImageLoadingService;
 import com.angelkjoseski.live_results.util.view.RecyclerTouchListener;
 
 import java.util.List;

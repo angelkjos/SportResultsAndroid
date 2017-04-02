@@ -1,8 +1,8 @@
-package com.angelkjoseski.live_results.networking.images.impl;
+package com.angelkjoseski.live_results.service.networking.images.impl;
 
 import android.widget.ImageView;
 
-import com.angelkjoseski.live_results.networking.images.ImageLoadingService;
+import com.angelkjoseski.live_results.service.networking.images.ImageLoadingService;
 import com.bumptech.glide.Glide;
 
 import java.io.Serializable;

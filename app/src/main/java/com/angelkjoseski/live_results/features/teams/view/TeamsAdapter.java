@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.angelkjoseski.live_results.R;
 import com.angelkjoseski.live_results.model.Team;
-import com.angelkjoseski.live_results.networking.images.ImageLoadingService;
+import com.angelkjoseski.live_results.service.networking.images.ImageLoadingService;
 
 import java.util.List;
 

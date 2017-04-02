@@ -1,6 +1,6 @@
 package com.angelkjoseski.live_results.dagger.modules;
 
-import com.angelkjoseski.live_results.networking.ApiService;
+import com.angelkjoseski.live_results.service.networking.ApiService;
 import com.angelkjoseski.live_results.util.GsonUtils;
 
 import java.io.IOException;

@@ -1,7 +1,7 @@
 package com.angelkjoseski.live_results.features.common.injection;
 
 import com.angelkjoseski.live_results.BuildConfig;
-import com.angelkjoseski.live_results.networking.ApiService;
+import com.angelkjoseski.live_results.service.networking.ApiService;
 import com.angelkjoseski.live_results.util.GsonUtils;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 

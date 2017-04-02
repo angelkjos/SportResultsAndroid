@@ -1,4 +1,4 @@
-package com.angelkjoseski.live_results.networking.images;
+package com.angelkjoseski.live_results.service.networking.images;
 
 import android.widget.ImageView;
 

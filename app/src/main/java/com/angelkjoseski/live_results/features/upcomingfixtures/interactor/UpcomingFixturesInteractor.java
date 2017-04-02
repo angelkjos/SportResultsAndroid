@@ -4,7 +4,7 @@ import com.angelkjoseski.live_results.features.common.interactor.InteractorTempl
 import com.angelkjoseski.live_results.model.Fixture;
 import com.angelkjoseski.live_results.model.FixtureList;
 import com.angelkjoseski.live_results.features.upcomingfixtures.UpcomingFixtures;
-import com.angelkjoseski.live_results.networking.ApiService;
+import com.angelkjoseski.live_results.service.networking.ApiService;
 
 import java.util.ArrayList;
 import java.util.List;

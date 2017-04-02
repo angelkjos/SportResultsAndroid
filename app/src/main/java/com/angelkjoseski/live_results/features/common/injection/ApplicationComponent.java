@@ -27,6 +27,7 @@ import dagger.Component;
  */
 @Singleton
 @Component(modules = {
+        ApplicationModule.class,
         NetworkingModule.class,
         ImageLoadingModule.class,
 })

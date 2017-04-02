@@ -8,6 +8,13 @@ public class Team {
     private String teamName;
     private String bannerUrl;
 
+    public Team() {
+    }
+
+    public Team(long teamId) {
+        this.teamId = teamId;
+    }
+
     public long getTeamId() {
         return teamId;
     }
@@ -30,5 +37,15 @@ public class Team {
 
     public void setBannerUrl(String bannerUrl) {
         this.bannerUrl = bannerUrl;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Team)) {
+            return false;
+        }
+
+        Team other = (Team) obj;
+        return this.teamId == other.teamId;
     }
 }

@@ -2,19 +2,22 @@ package com.angelkjoseski.live_results.features.upcomingfixtures.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.TextView;
 
 import com.angelkjoseski.live_results.R;
 import com.angelkjoseski.live_results.SportResultsApplication;
-import com.angelkjoseski.live_results.features.upcomingfixtures.injection.UpcomingFixturesModule;
 import com.angelkjoseski.live_results.features.common.view.SportResultsFragment;
-import com.angelkjoseski.live_results.model.Fixture;
 import com.angelkjoseski.live_results.features.upcomingfixtures.UpcomingFixtures;
+import com.angelkjoseski.live_results.features.upcomingfixtures.injection.UpcomingFixturesModule;
+import com.angelkjoseski.live_results.model.Fixture;
+import com.angelkjoseski.live_results.service.networking.images.ImageLoadingService;
 
 import java.util.List;
 
@@ -28,13 +31,18 @@ import butterknife.ButterKnife;
  */
 public class UpcomingFixturesFragment extends SportResultsFragment implements UpcomingFixtures.View {
 
-    @BindView(R.id.textView)
-    TextView textView;
     @BindView(R.id.onlyFavouredCheckbox)
     CheckBox onlyFavouredCheckbox;
+    @BindView(R.id.upcomingFixturesRecyclerView)
+    RecyclerView recyclerView;
 
     @Inject
     UpcomingFixtures.Presenter presenter;
+    @Inject
+    ImageLoadingService imageLoadingService;
+
+    private List<Fixture> fixtures;
+    private UpcomingFixturesAdapter adapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,6 +56,9 @@ public class UpcomingFixturesFragment extends SportResultsFragment implements Up
             savedInstanceState) {
         View view = inflater.inflate(R.layout.upcoming_fixtures_fragment, container, false);
         ButterKnife.bind(this, view);
+
+        setupRecyclerView();
+
         presenter.onCreated();
 
         onlyFavouredCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -57,6 +68,14 @@ public class UpcomingFixturesFragment extends SportResultsFragment implements Up
             }
         });
         return view;
+    }
+
+    private void setupRecyclerView() {
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getSportResultsActivity());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        adapter = new UpcomingFixturesAdapter(fixtures, imageLoadingService);
+        recyclerView.setAdapter(adapter);
     }
 
     private void injectDependencies() {
@@ -69,7 +88,9 @@ public class UpcomingFixturesFragment extends SportResultsFragment implements Up
 
     @Override
     public void showFixtures(List<Fixture> fixtures) {
-        textView.setText(fixtures.toString());
+        this.fixtures = fixtures;
+        adapter = new UpcomingFixturesAdapter(fixtures, imageLoadingService);
+        recyclerView.setAdapter(adapter);
     }
 
     @Override

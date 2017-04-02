@@ -5,6 +5,7 @@ import com.angelkjoseski.live_results.features.upcomingfixtures.UpcomingFixtures
 import com.angelkjoseski.live_results.model.Fixture;
 import com.angelkjoseski.live_results.model.FixtureList;
 import com.angelkjoseski.live_results.model.Team;
+import com.angelkjoseski.live_results.model.TeamList;
 import com.angelkjoseski.live_results.service.FavouriteService;
 import com.angelkjoseski.live_results.service.networking.ApiService;
 
@@ -63,7 +64,28 @@ public class UpcomingFixturesInteractor extends InteractorTemplate<FixtureList> 
                     }
                 })
                 .toList()
-                .toObservable()
+                .flatMapObservable(new Function<List<Fixture>, ObservableSource<? extends List<Fixture>>>() {
+                    @Override
+                    public ObservableSource<? extends List<Fixture>> apply(final List<Fixture> fixtures) throws
+                            Exception {
+                        return apiService.getAllTeams()
+                                .map(new Function<TeamList, List<Fixture>>() {
+                                    @Override
+                                    public List<Fixture> apply(TeamList teamList) throws Exception {
+                                        for (Fixture fixture : fixtures) {
+                                            for (Team team : teamList.getTeams()) {
+                                                if (team.getTeamId() == fixture.getTeamIdHome()) {
+                                                    fixture.setTeamHome(team);
+                                                } else if (team.getTeamId() == fixture.getTeamIdAway()) {
+                                                    fixture.setTeamAway(team);
+                                                }
+                                            }
+                                        }
+                                        return fixtures;
+                                    }
+                                });
+                    }
+                })
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
@@ -114,7 +136,28 @@ public class UpcomingFixturesInteractor extends InteractorTemplate<FixtureList> 
                     }
                 })
                 .toList()
-                .toObservable()
+                .flatMapObservable(new Function<List<Fixture>, ObservableSource<? extends List<Fixture>>>() {
+                    @Override
+                    public ObservableSource<? extends List<Fixture>> apply(final List<Fixture> fixtures) throws
+                            Exception {
+                        return apiService.getAllTeams()
+                                .map(new Function<TeamList, List<Fixture>>() {
+                                    @Override
+                                    public List<Fixture> apply(TeamList teamList) throws Exception {
+                                        for (Fixture fixture : fixtures) {
+                                            for (Team team : teamList.getTeams()) {
+                                                if (team.getTeamId() == fixture.getTeamIdHome()) {
+                                                    fixture.setTeamHome(team);
+                                                } else if (team.getTeamId() == fixture.getTeamIdAway()) {
+                                                    fixture.setTeamAway(team);
+                                                }
+                                            }
+                                        }
+                                        return fixtures;
+                                    }
+                                });
+                    }
+                })
                 .observeOn(AndroidSchedulers.mainThread());
     }
 }

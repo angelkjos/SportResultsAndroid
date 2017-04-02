@@ -1,5 +1,6 @@
 package com.angelkjoseski.live_results.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -70,5 +71,9 @@ public class Fixture {
 
     public void setTeamAway(Team teamAway) {
         this.teamAway = teamAway;
+    }
+
+    public String getStartTimeString() {
+        return SimpleDateFormat.getDateInstance().format(startTime);
     }
 }

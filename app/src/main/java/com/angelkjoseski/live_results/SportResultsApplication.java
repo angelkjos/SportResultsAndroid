@@ -47,7 +47,7 @@ public class SportResultsApplication extends Application {
      * in the application class.
      * Also, will initialise Stetho for debugging.
      */
-    private void injectDependencies() {
+    protected void injectDependencies() {
         if (BuildConfig.DEBUG) {
             Stetho.initialize(
                     Stetho.newInitializerBuilder(this)

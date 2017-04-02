@@ -1,5 +1,6 @@
 package com.angelkjoseski.live_results.features.common;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -66,7 +67,7 @@ public class SportResultsActivity extends AppCompatActivity implements SportResu
 
     @Override
     public void showLoading(boolean show) {
-        // TODO: Implement loading spinner.
+        ProgressDialog.show(this, getString(R.string.loading), getString(R.string.please_wait));
     }
 
     @Override

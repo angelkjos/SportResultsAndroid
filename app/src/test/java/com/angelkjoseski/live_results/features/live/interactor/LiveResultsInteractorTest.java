@@ -86,7 +86,11 @@ public class LiveResultsInteractorTest {
     testObserver.assertValue(new Predicate<List<Fixture>>() {
       @Override
       public boolean test(List<Fixture> fixtures) throws Exception {
-        return fixtures.size() == 1 && fixtures.get(0).getTeamIdAway() == 10L;
+        return (fixtures.size() == 1
+          && fixtures.get(0).getTeamIdAway() == 10L
+          && fixtures.get(0).getTeamAway() != null
+          && fixtures.get(0).getTeamAway().getTeamName().equals("Angel Kjoseski")
+        );
       }
     });
   }

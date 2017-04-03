@@ -1,0 +1,34 @@
+{
+  "teams":[
+    {
+      "teamId":12,
+      "teamName":"Happy Tree Friends",
+      "bannerUrl":"http://my.teambanner.url/12.jpg"
+    },
+    {
+      "teamId":11,
+      "teamName":"Android Asteroids",
+      "bannerUrl":"http://my.teambanner.url/10.jpg"
+    },
+    {
+      "teamId":10,
+      "teamName":"Angel Kjoseski",
+      "bannerUrl":"http://my.teambanner.url/10.jpg"
+    },
+    {
+      "teamId":9,
+      "teamName":"John Smith",
+      "bannerUrl":"http://my.teambanner.url/10.jpg"
+    },
+    {
+      "teamId":8,
+      "teamName":"Green",
+      "bannerUrl":"http://my.teambanner.url/10.jpg"
+    },
+    {
+      "teamId":7,
+      "teamName":"Orange",
+      "bannerUrl":"http://my.teambanner.url/10.jpg"
+    }
+  ]
+}

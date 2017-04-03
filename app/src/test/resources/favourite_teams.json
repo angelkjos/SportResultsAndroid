@@ -1,0 +1,9 @@
+{
+  "teams":[
+    {
+      "teamId":10,
+      "teamName":"Angel Kjoseski",
+      "bannerUrl":"http://my.teambanner.url/10.jpg"
+    }
+  ]
+}

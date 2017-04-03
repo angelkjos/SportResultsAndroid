@@ -5,6 +5,7 @@ import com.angelkjoseski.live_results.model.Fixture;
 import com.angelkjoseski.live_results.model.FixtureList;
 import com.angelkjoseski.live_results.model.TeamList;
 import com.angelkjoseski.live_results.service.FavouriteService;
+import com.angelkjoseski.live_results.service.NotificationService;
 import com.angelkjoseski.live_results.service.impl.ReactiveBackgroundResultsFetcher;
 import com.angelkjoseski.live_results.service.networking.ApiService;
 import com.angelkjoseski.live_results.util.GsonUtils;
@@ -44,6 +45,9 @@ public class LiveResultsInteractorTest {
     @Mock
     FavouriteService favouriteService;
 
+    @Mock
+    NotificationService notificationService;
+
     private ReactiveBackgroundResultsFetcher reactiveBackgroundResultsFetcher;
     private LiveResultsInteractor liveResultsInteractor;
 
@@ -61,7 +65,7 @@ public class LiveResultsInteractorTest {
 
     @Test
     public void getAllCurrentlyRunningFixturesForFavouriteTeams() throws Exception {
-        reactiveBackgroundResultsFetcher = new ReactiveBackgroundResultsFetcher(apiService, favouriteService);
+        reactiveBackgroundResultsFetcher = new ReactiveBackgroundResultsFetcher(apiService, favouriteService, notificationService);
         liveResultsInteractor = new LiveResultsInteractor(apiService, null, reactiveBackgroundResultsFetcher);
 
         // Mock fixtures

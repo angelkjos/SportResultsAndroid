@@ -8,6 +8,7 @@ import com.angelkjoseski.live_results.features.live.LiveResults;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -40,7 +41,7 @@ public class LiveResultsPresenter extends PresenterTemplate<LiveResults.View, Li
 
     private void setDateOnView() {
         Date dateNow = new Date();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
         view.setDate(simpleDateFormat.format(dateNow));
     }
 

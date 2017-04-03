@@ -1,5 +1,7 @@
 package com.angelkjoseski.live_results.model;
 
+import java.util.Locale;
+
 /**
  * Model class for a result.
  */
@@ -34,6 +36,6 @@ public class Result {
     }
 
     public String getScoreString() {
-        return String.format("%d : %d", scoreHome, scoreAway);
+        return String.format(Locale.getDefault(), "%d : %d", scoreHome, scoreAway);
     }
 }

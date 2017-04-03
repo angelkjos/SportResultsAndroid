@@ -17,35 +17,35 @@ import io.reactivex.functions.Function;
  */
 public class FillFixturesWithTeamDetailsTransformer implements ObservableTransformer<List<Fixture>, List<Fixture>> {
 
-  private ApiService apiService;
+    private ApiService apiService;
 
-  public FillFixturesWithTeamDetailsTransformer(ApiService apiService) {
-    this.apiService = apiService;
-  }
+    public FillFixturesWithTeamDetailsTransformer(ApiService apiService) {
+        this.apiService = apiService;
+    }
 
-  @Override
-  public ObservableSource<List<Fixture>> apply(Observable<List<Fixture>> upstream) {
-      return upstream
-        .flatMap(new Function<List<Fixture>, ObservableSource<List<Fixture>>>() {
-          @Override
-          public ObservableSource<List<Fixture>> apply(final List<Fixture> fixtures) throws Exception {
-            return apiService.getAllTeams()
-              .map(new Function<TeamList, List<Fixture>>() {
-                @Override
-                public List<Fixture> apply(TeamList teamList) throws Exception {
-                  for (Fixture fixture : fixtures) {
-                    for (Team team : teamList.getTeams()) {
-                      if (team.getTeamId() == fixture.getTeamIdHome()) {
-                        fixture.setTeamHome(team);
-                      } else if (team.getTeamId() == fixture.getTeamIdAway()) {
-                        fixture.setTeamAway(team);
-                      }
+    @Override
+    public ObservableSource<List<Fixture>> apply(Observable<List<Fixture>> upstream) {
+        return upstream
+                .flatMap(new Function<List<Fixture>, ObservableSource<List<Fixture>>>() {
+                    @Override
+                    public ObservableSource<List<Fixture>> apply(final List<Fixture> fixtures) throws Exception {
+                        return apiService.getAllTeams()
+                                .map(new Function<TeamList, List<Fixture>>() {
+                                    @Override
+                                    public List<Fixture> apply(TeamList teamList) throws Exception {
+                                        for (Fixture fixture : fixtures) {
+                                            for (Team team : teamList.getTeams()) {
+                                                if (team.getTeamId() == fixture.getTeamIdHome()) {
+                                                    fixture.setTeamHome(team);
+                                                } else if (team.getTeamId() == fixture.getTeamIdAway()) {
+                                                    fixture.setTeamAway(team);
+                                                }
+                                            }
+                                        }
+                                        return fixtures;
+                                    }
+                                });
                     }
-                  }
-                  return fixtures;
-                }
-              });
-          }
-        });
-  }
+                });
+    }
 }

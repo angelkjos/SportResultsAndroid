@@ -17,43 +17,44 @@ import io.reactivex.functions.Predicate;
  */
 public class FixturesBasedOnFavouritesTransformer implements ObservableTransformer<List<Fixture>, Fixture> {
 
-  private final FavouriteService favouriteService;
+    private final FavouriteService favouriteService;
 
-  public FixturesBasedOnFavouritesTransformer(FavouriteService favouriteService) {
-    this.favouriteService = favouriteService;
-  }
+    public FixturesBasedOnFavouritesTransformer(FavouriteService favouriteService) {
+        this.favouriteService = favouriteService;
+    }
 
-  @Override
-  public ObservableSource<Fixture> apply(Observable<List<Fixture>> upstream) {
-    return upstream
-            .flatMap(new Function<List<Fixture>, ObservableSource<Fixture>>() {
-              @Override
-              public ObservableSource<Fixture> apply(List<Fixture> fixtures) throws Exception {
-                return Observable.fromIterable(fixtures);
-              }
-            })
-            .flatMap(new Function<Fixture, ObservableSource<Fixture>>() {
-              @Override
-              public ObservableSource<Fixture> apply(final Fixture fixture) throws Exception {
-                return favouriteService.getFavouriteTeams().flatMap(new Function<List<Team>, ObservableSource<Fixture>>() {
-                  @Override
-                  public ObservableSource<Fixture> apply(List<Team> favouriteTeams) throws Exception {
-                    Team tempTeamAway = new Team(fixture.getTeamIdAway());
-                    Team tempTeamHome = new Team(fixture.getTeamIdHome());
-                    if (favouriteTeams.contains(tempTeamAway) || favouriteTeams.contains(tempTeamHome)) {
-                      return Observable.just(fixture);
-                    } else {
-                      return Observable.just(new Fixture());
+    @Override
+    public ObservableSource<Fixture> apply(Observable<List<Fixture>> upstream) {
+        return upstream
+                .flatMap(new Function<List<Fixture>, ObservableSource<Fixture>>() {
+                    @Override
+                    public ObservableSource<Fixture> apply(List<Fixture> fixtures) throws Exception {
+                        return Observable.fromIterable(fixtures);
                     }
-                  }
+                })
+                .flatMap(new Function<Fixture, ObservableSource<Fixture>>() {
+                    @Override
+                    public ObservableSource<Fixture> apply(final Fixture fixture) throws Exception {
+                        return favouriteService.getFavouriteTeams().flatMap(new Function<List<Team>,
+                                ObservableSource<Fixture>>() {
+                            @Override
+                            public ObservableSource<Fixture> apply(List<Team> favouriteTeams) throws Exception {
+                                Team tempTeamAway = new Team(fixture.getTeamIdAway());
+                                Team tempTeamHome = new Team(fixture.getTeamIdHome());
+                                if (favouriteTeams.contains(tempTeamAway) || favouriteTeams.contains(tempTeamHome)) {
+                                    return Observable.just(fixture);
+                                } else {
+                                    return Observable.just(new Fixture());
+                                }
+                            }
+                        });
+                    }
+                })
+                .filter(new Predicate<Fixture>() {
+                    @Override
+                    public boolean test(Fixture fixture) throws Exception {
+                        return fixture.getFixtureId() > 0;
+                    }
                 });
-              }
-            })
-            .filter(new Predicate<Fixture>() {
-              @Override
-              public boolean test(Fixture fixture) throws Exception {
-                return fixture.getFixtureId() > 0;
-              }
-            });
-  }
+    }
 }

@@ -22,8 +22,6 @@
             </intent-filter>
         </activity>
 
-      <service android:name=".service.LiveResultsFetcherService"/>
-
     </application>
 
 </manifest>

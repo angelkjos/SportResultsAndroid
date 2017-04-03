@@ -1,14 +1,12 @@
 package com.angelkjoseski.live_results.features.teams.interactor;
 
 import android.content.Context;
-import android.content.Intent;
 
 import com.angelkjoseski.live_results.features.common.interactor.InteractorTemplate;
 import com.angelkjoseski.live_results.features.teams.Teams;
 import com.angelkjoseski.live_results.model.Team;
 import com.angelkjoseski.live_results.model.TeamList;
 import com.angelkjoseski.live_results.service.FavouriteService;
-import com.angelkjoseski.live_results.service.LiveResultsFetcherService;
 import com.angelkjoseski.live_results.service.networking.ApiService;
 
 import java.util.List;
@@ -37,7 +35,8 @@ public class TeamsInteractor extends InteractorTemplate<TeamList> implements Tea
      * @param retrofit   singleton Retrofit instance
      */
     @Inject
-    public TeamsInteractor(ApiService apiService, Retrofit retrofit, FavouriteService favouriteService, Context context) {
+    public TeamsInteractor(ApiService apiService, Retrofit retrofit, FavouriteService favouriteService, Context
+            context) {
         super(apiService, retrofit);
         this.favouriteService = favouriteService;
         this.context = context;
@@ -48,15 +47,10 @@ public class TeamsInteractor extends InteractorTemplate<TeamList> implements Tea
     public Observable<List<Team>> getAllTeams() {
         return apiService.getAllTeams()
                 .subscribeOn(Schedulers.io())
-                .map(new Function<TeamList, List<Team>>() {
+                .flatMap(new Function<TeamList, ObservableSource<Team>>() {
                     @Override
-                    public List<Team> apply(TeamList teamList) throws Exception {
-                        return teamList.getTeams();
-                    }
-                }).flatMap(new Function<List<Team>, ObservableSource<Team>>() {
-                    @Override
-                    public ObservableSource<Team> apply(List<Team> teams) throws Exception {
-                        return Observable.fromIterable(teams);
+                    public ObservableSource<Team> apply(TeamList teamList) throws Exception {
+                        return Observable.fromIterable(teamList.getTeams());
                     }
                 })
                 .flatMap(new Function<Team, ObservableSource<Team>>() {
@@ -80,6 +74,5 @@ public class TeamsInteractor extends InteractorTemplate<TeamList> implements Tea
     @Override
     public void addTeamToFavourites(Team team) {
         favouriteService.storeFavourite(team);
-        context.startService(new Intent(context, LiveResultsFetcherService.class));
     }
 }

@@ -45,16 +45,10 @@ public class UpcomingFixturesInteractor extends InteractorTemplate<FixtureList> 
     public Observable<List<Fixture>> getAllUpcomingFixtures() {
         return apiService.getAllFixtures()
                 .subscribeOn(Schedulers.io())
-                .map(new Function<FixtureList, List<Fixture>>() {
+                .flatMap(new Function<FixtureList, ObservableSource<Fixture>>() {
                     @Override
-                    public List<Fixture> apply(FixtureList fixtureList) throws Exception {
-                        return  fixtureList.getFixtures();
-                    }
-                })
-                .flatMap(new Function<List<Fixture>, ObservableSource<Fixture>>() {
-                    @Override
-                    public ObservableSource<Fixture> apply(List<Fixture> fixtures) throws Exception {
-                        return Observable.fromIterable(fixtures);
+                    public ObservableSource<Fixture> apply(FixtureList fixtures) throws Exception {
+                        return Observable.fromIterable(fixtures.getFixtures());
                     }
                 })
                 .filter(new Predicate<Fixture>() {
@@ -76,7 +70,7 @@ public class UpcomingFixturesInteractor extends InteractorTemplate<FixtureList> 
                 .map(new Function<FixtureList, List<Fixture>>() {
                     @Override
                     public List<Fixture> apply(FixtureList fixtureList) throws Exception {
-                        return  fixtureList.getFixtures();
+                        return fixtureList.getFixtures();
                     }
                 })
                 .compose(new FixturesBasedOnFavouritesTransformer(favouriteService))

@@ -8,6 +8,7 @@ import com.angelkjoseski.live_results.model.Team;
 import com.angelkjoseski.live_results.model.TeamList;
 import com.angelkjoseski.live_results.service.FavouriteService;
 import com.angelkjoseski.live_results.service.networking.ApiService;
+import com.angelkjoseski.live_results.util.FixturesBasedOnFavouritesTransformer;
 
 import java.util.Date;
 import java.util.List;
@@ -99,36 +100,7 @@ public class UpcomingFixturesInteractor extends InteractorTemplate<FixtureList> 
                         return  fixtureList.getFixtures();
                     }
                 })
-                .flatMap(new Function<List<Fixture>, ObservableSource<Fixture>>() {
-                    @Override
-                    public ObservableSource<Fixture> apply(List<Fixture> fixtures) throws Exception {
-                        return Observable.fromIterable(fixtures);
-                    }
-                })
-                .flatMap(new Function<Fixture, ObservableSource<Fixture>>() {
-                    @Override
-                    public ObservableSource<Fixture> apply(final Fixture fixture) throws Exception {
-                        return favouriteService.getFavouriteTeams()
-                                .flatMap(new Function<List<Team>, ObservableSource<Fixture>>() {
-                                    @Override
-                                    public ObservableSource<Fixture> apply(List<Team> favouriteTeams) throws Exception {
-                                        Team tempTeamAway = new Team(fixture.getTeamIdAway());
-                                        Team tempTeamHome = new Team(fixture.getTeamIdHome());
-                                        if (favouriteTeams.contains(tempTeamAway) || favouriteTeams.contains(tempTeamHome)) {
-                                            return Observable.just(fixture);
-                                        } else {
-                                            return Observable.just(new Fixture());
-                                        }
-                                    }
-                                });
-                    }
-                })
-                .filter(new Predicate<Fixture>() {
-                    @Override
-                    public boolean test(Fixture fixture) throws Exception {
-                        return fixture.getFixtureId() > 0;
-                    }
-                })
+                .compose(new FixturesBasedOnFavouritesTransformer(favouriteService))
                 .filter(new Predicate<Fixture>() {
                     @Override
                     public boolean test(Fixture fixture) throws Exception {

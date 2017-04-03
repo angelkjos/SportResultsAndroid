@@ -2,6 +2,7 @@ package com.angelkjoseski.live_results.model;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Model class for a match fixture.
@@ -75,5 +76,11 @@ public class Fixture {
 
     public String getStartTimeString() {
         return SimpleDateFormat.getDateInstance().format(startTime);
+    }
+
+    public String getTeamsString() {
+        String teamHomeName = teamHome != null ? teamHome.getTeamName() : "n/a";
+        String teamAwayName = teamAway != null ? teamAway.getTeamName() : "n/a";
+        return String.format(Locale.getDefault(), "%s - %s", teamHomeName, teamAwayName);
     }
 }

@@ -5,6 +5,8 @@ import android.content.Context;
 import com.angelkjoseski.live_results.SportResultsApplication;
 import com.angelkjoseski.live_results.service.BackgroundResultsFetcher;
 import com.angelkjoseski.live_results.service.FavouriteService;
+import com.angelkjoseski.live_results.service.NotificationService;
+import com.angelkjoseski.live_results.service.impl.AndroidNotificationService;
 import com.angelkjoseski.live_results.service.impl.ReactiveBackgroundResultsFetcher;
 import com.angelkjoseski.live_results.service.impl.StorageFavouriteService;
 
@@ -33,8 +35,14 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    public BackgroundResultsFetcher provideBackgroundResultsFetcher(ReactiveBackgroundResultsFetcher reactiveBackgroundResultsFetcher) {
-        return reactiveBackgroundResultsFetcher;
+    public BackgroundResultsFetcher provideBackgroundResultsFetcher(ReactiveBackgroundResultsFetcher backgroundResultsFetcher) {
+        return backgroundResultsFetcher;
+    }
+
+    @Provides
+    @Singleton
+    public NotificationService provideNotificationService(AndroidNotificationService notificationService) {
+        return notificationService;
     }
 
 }

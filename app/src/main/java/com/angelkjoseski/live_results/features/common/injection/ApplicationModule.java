@@ -3,7 +3,9 @@ package com.angelkjoseski.live_results.features.common.injection;
 import android.content.Context;
 
 import com.angelkjoseski.live_results.SportResultsApplication;
+import com.angelkjoseski.live_results.service.BackgroundResultsFetcher;
 import com.angelkjoseski.live_results.service.FavouriteService;
+import com.angelkjoseski.live_results.service.impl.ReactiveBackgroundResultsFetcher;
 import com.angelkjoseski.live_results.service.impl.StorageFavouriteService;
 
 import javax.inject.Singleton;
@@ -27,6 +29,12 @@ public class ApplicationModule {
     @Singleton
     public FavouriteService provideFavouriteService() {
         return new StorageFavouriteService();
+    }
+
+    @Provides
+    @Singleton
+    public BackgroundResultsFetcher provideBackgroundResultsFetcher(ReactiveBackgroundResultsFetcher reactiveBackgroundResultsFetcher) {
+        return reactiveBackgroundResultsFetcher;
     }
 
 }

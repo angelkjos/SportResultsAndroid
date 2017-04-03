@@ -1,12 +1,9 @@
-package com.angelkjoseski.live_results.service;
+package com.angelkjoseski.live_results.service.impl;
 
-import android.app.IntentService;
-import android.content.Intent;
-import android.support.annotation.Nullable;
-
-import com.angelkjoseski.live_results.SportResultsApplication;
 import com.angelkjoseski.live_results.model.Fixture;
 import com.angelkjoseski.live_results.model.FixtureList;
+import com.angelkjoseski.live_results.service.BackgroundResultsFetcher;
+import com.angelkjoseski.live_results.service.FavouriteService;
 import com.angelkjoseski.live_results.service.networking.ApiService;
 import com.angelkjoseski.live_results.util.rx_transformers.FillFixturesWithTeamDetailsTransformer;
 import com.angelkjoseski.live_results.util.rx_transformers.FixturesBasedOnFavouritesTransformer;
@@ -22,47 +19,26 @@ import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
-import io.reactivex.observers.DefaultObserver;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * Service to fetch live-results in the background.
+ * Class which handles fetching of live results using RxJava.
  */
-public class LiveResultsFetcherService extends IntentService {
-    private static final String TAG = "LiveResultsFetcherServi";
+public class ReactiveBackgroundResultsFetcher implements BackgroundResultsFetcher {
     private static final int DELAY_SECONDS = 10;
 
-    @Inject
-    FavouriteService favouriteService;
+    private ApiService apiService;
+    private FavouriteService favouriteService;
 
     @Inject
-    ApiService apiService;
-
-    /**
-     * Creates an IntentService.  Invoked by your subclass's constructor.
-     *
-     * @param name Used to name the worker thread, important only for debugging.
-     */
-    public LiveResultsFetcherService(String name) {
-        super(name);
-        SportResultsApplication.getInstance().getApplicationComponent().inject(this);
-    }
-
-    public LiveResultsFetcherService() {
-        this(null);
+    public ReactiveBackgroundResultsFetcher(ApiService apiService, FavouriteService favouriteService) {
+        this.apiService = apiService;
+        this.favouriteService = favouriteService;
     }
 
     @Override
-    protected void onHandleIntent(@Nullable Intent intent) {
-        if (favouriteService.hasFavourites()) {
-            fetchLiveDataForFavourites();
-        } else {
-            stopSelf();
-        }
-    }
-
-    private void fetchLiveDataForFavourites() {
-        apiService.getAllFixtures()
+    public Observable<List<Fixture>> startLiveResultsFetching() {
+        return apiService.getAllFixtures()
                 .subscribeOn(Schedulers.io())
                 .map(new Function<FixtureList, List<Fixture>>() {
                     @Override
@@ -102,22 +78,6 @@ public class LiveResultsFetcherService extends IntentService {
                         }
                     }
                 })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DefaultObserver<List<Fixture>>() {
-                    @Override
-                    public void onNext(List<Fixture> value) {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }

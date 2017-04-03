@@ -22,6 +22,9 @@
             </intent-filter>
         </activity>
 
+        <service android:name=".service.jobs.ResultsFetchingContinuousJob"
+                 android:permission="android.permission.BIND_JOB_SERVICE"/>
+
     </application>
 
 </manifest>

@@ -23,4 +23,9 @@ public interface BackgroundResultsFetcher {
      */
     Observable<List<Fixture>> startLiveResultsFetching(boolean repeat);
 
+    /**
+     * Will schedule a background job which will run periodically and check for results.
+     */
+    void scheduleBackgroundJob();
+
 }

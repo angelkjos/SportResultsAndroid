@@ -4,7 +4,10 @@ import android.app.Application;
 
 import com.angelkjoseski.live_results.features.common.injection.ApplicationComponent;
 import com.angelkjoseski.live_results.features.common.injection.DaggerApplicationComponent;
+import com.angelkjoseski.live_results.service.BackgroundResultsFetcher;
 import com.facebook.stetho.Stetho;
+
+import javax.inject.Inject;
 
 
 /**
@@ -13,7 +16,6 @@ import com.facebook.stetho.Stetho;
  * Injects global application dependencies and handles session/data management.
  */
 public class SportResultsApplication extends Application {
-
 
     /**
      * Reference to the singleton instance of Application.
@@ -25,6 +27,8 @@ public class SportResultsApplication extends Application {
      */
     protected ApplicationComponent applicationComponent;
 
+    @Inject
+    BackgroundResultsFetcher backgroundResultsFetcher;
 
     @Override
     public void onCreate() {
@@ -32,6 +36,7 @@ public class SportResultsApplication extends Application {
         setInstance(this);
 
         injectDependencies();
+        backgroundResultsFetcher.scheduleBackgroundJob();
     }
 
     public static SportResultsApplication getInstance() {
@@ -57,10 +62,12 @@ public class SportResultsApplication extends Application {
         }
 
         applicationComponent = DaggerApplicationComponent.builder().build();
+        applicationComponent.inject(this);
 
     }
 
     public ApplicationComponent getApplicationComponent() {
         return getInstance().applicationComponent;
     }
+
 }

@@ -1,10 +1,16 @@
 package com.angelkjoseski.live_results.service.impl;
 
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
+import android.content.Context;
+
 import com.angelkjoseski.live_results.model.Fixture;
 import com.angelkjoseski.live_results.model.FixtureList;
 import com.angelkjoseski.live_results.service.BackgroundResultsFetcher;
 import com.angelkjoseski.live_results.service.FavouriteService;
 import com.angelkjoseski.live_results.service.NotificationService;
+import com.angelkjoseski.live_results.service.jobs.ResultsFetchingContinuousJob;
 import com.angelkjoseski.live_results.service.networking.ApiService;
 import com.angelkjoseski.live_results.util.rx_transformers.FillFixturesWithTeamDetailsTransformer;
 import com.angelkjoseski.live_results.util.rx_transformers.FixturesBasedOnFavouritesTransformer;
@@ -29,15 +35,22 @@ import io.reactivex.schedulers.Schedulers;
 public class ReactiveBackgroundResultsFetcher implements BackgroundResultsFetcher {
     private static final int DELAY_SECONDS = 10;
 
+    private static final int SECOND_MILLIS = 1000;
+    private static final int JOB_PERIODIC_DELAY = 20;
+
+    private int jobId = 1;
+
+    private Context context;
     private ApiService apiService;
     private FavouriteService favouriteService;
     private NotificationService notificationService;
 
 
     @Inject
-    public ReactiveBackgroundResultsFetcher(ApiService apiService,
+    public ReactiveBackgroundResultsFetcher(Context context, ApiService apiService,
                                             FavouriteService favouriteService,
                                             NotificationService notificationService) {
+        this.context = context;
         this.apiService = apiService;
         this.favouriteService = favouriteService;
         this.notificationService = notificationService;
@@ -96,5 +109,14 @@ public class ReactiveBackgroundResultsFetcher implements BackgroundResultsFetche
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public void scheduleBackgroundJob() {
+        ComponentName serviceComponent = new ComponentName(context, ResultsFetchingContinuousJob.class);
+        JobInfo.Builder builder = new JobInfo.Builder(jobId++ , serviceComponent);
+        builder.setPeriodic(JOB_PERIODIC_DELAY * SECOND_MILLIS);
+        JobScheduler jobScheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
+        jobScheduler.schedule(builder.build());
     }
 }

@@ -4,15 +4,16 @@ import com.angelkjoseski.live_results.SportResultsApplication;
 import com.angelkjoseski.live_results.features.live.LiveResults;
 import com.angelkjoseski.live_results.features.live.injection.LiveResultsComponent;
 import com.angelkjoseski.live_results.features.live.injection.LiveResultsModule;
+import com.angelkjoseski.live_results.features.live.view.LiveResultsFragment;
+import com.angelkjoseski.live_results.features.teams.Teams;
 import com.angelkjoseski.live_results.features.teams.injection.TeamsComponent;
+import com.angelkjoseski.live_results.features.teams.injection.TeamsModule;
+import com.angelkjoseski.live_results.features.teams.view.AllTeamsFragment;
 import com.angelkjoseski.live_results.features.upcomingfixtures.UpcomingFixtures;
 import com.angelkjoseski.live_results.features.upcomingfixtures.injection.UpcomingFixturesComponent;
-import com.angelkjoseski.live_results.features.teams.injection.TeamsModule;
 import com.angelkjoseski.live_results.features.upcomingfixtures.injection.UpcomingFixturesModule;
-import com.angelkjoseski.live_results.features.live.view.LiveResultsFragment;
-import com.angelkjoseski.live_results.features.teams.view.AllTeamsFragment;
 import com.angelkjoseski.live_results.features.upcomingfixtures.view.UpcomingFixturesFragment;
-import com.angelkjoseski.live_results.features.teams.Teams;
+import com.angelkjoseski.live_results.service.jobs.ResultsFetchingContinuousJob;
 
 import javax.inject.Singleton;
 
@@ -39,6 +40,12 @@ public interface ApplicationComponent {
      * @param sportResultsApplication instance of application
      */
     void inject(SportResultsApplication sportResultsApplication);
+
+    // Region: Injection in other classes
+
+    void inject(ResultsFetchingContinuousJob resultsFetchingContinousJob);
+
+    // End-Region
 
     /**
      * Returns a new Dagger 2 component that inherits all dependencies from this component and

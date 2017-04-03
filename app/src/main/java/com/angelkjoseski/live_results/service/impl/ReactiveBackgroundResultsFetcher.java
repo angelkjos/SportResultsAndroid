@@ -37,7 +37,7 @@ public class ReactiveBackgroundResultsFetcher implements BackgroundResultsFetche
     }
 
     @Override
-    public Observable<List<Fixture>> startLiveResultsFetching() {
+    public Observable<List<Fixture>> startLiveResultsFetching(final boolean repeat) {
         return apiService.getAllFixtures()
                 .subscribeOn(Schedulers.io())
                 .map(new Function<FixtureList, List<Fixture>>() {
@@ -71,7 +71,9 @@ public class ReactiveBackgroundResultsFetcher implements BackgroundResultsFetche
                 .takeUntil(new Predicate<List<Fixture>>() {
                     @Override
                     public boolean test(List<Fixture> fixtures) throws Exception {
-                        if (fixtures.size() == 0) {
+                        if (!repeat) {
+                            return true;
+                        } else if (fixtures.size() == 0) {
                             throw new Exception("No live fixtures right now.");
                         } else {
                             return false;

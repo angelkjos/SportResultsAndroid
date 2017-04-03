@@ -21,6 +21,6 @@ public interface BackgroundResultsFetcher {
      *
      * @return an Observable emiting live results.
      */
-    Observable<List<Fixture>> startLiveResultsFetching();
+    Observable<List<Fixture>> startLiveResultsFetching(boolean repeat);
 
 }

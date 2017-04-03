@@ -6,7 +6,15 @@ import java.util.List;
  * Wrapper model for list of all teams.
  */
 public class TeamList {
+
     private List<Team> teams;
+
+    public TeamList() {
+    }
+
+    public TeamList(List<Team> teams) {
+        this.teams = teams;
+    }
 
     public List<Team> getTeams() {
         return teams;

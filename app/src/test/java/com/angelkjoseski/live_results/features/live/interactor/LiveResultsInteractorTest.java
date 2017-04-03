@@ -3,6 +3,7 @@ package com.angelkjoseski.live_results.features.live.interactor;
 import com.angelkjoseski.live_results.helper.TestHelper;
 import com.angelkjoseski.live_results.model.Fixture;
 import com.angelkjoseski.live_results.model.FixtureList;
+import com.angelkjoseski.live_results.model.Team;
 import com.angelkjoseski.live_results.model.TeamList;
 import com.angelkjoseski.live_results.service.FavouriteService;
 import com.angelkjoseski.live_results.service.NotificationService;
@@ -10,6 +11,7 @@ import com.angelkjoseski.live_results.service.impl.ReactiveBackgroundResultsFetc
 import com.angelkjoseski.live_results.service.networking.ApiService;
 import com.angelkjoseski.live_results.util.GsonUtils;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -17,6 +19,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
@@ -63,11 +66,15 @@ public class LiveResultsInteractorTest {
         });
     }
 
+    @Before
+    public void setup() {
+        reactiveBackgroundResultsFetcher = new ReactiveBackgroundResultsFetcher(null, apiService, favouriteService,
+                notificationService);
+        liveResultsInteractor = new LiveResultsInteractor(apiService, null, reactiveBackgroundResultsFetcher);
+    }
+
     @Test
     public void getAllCurrentlyRunningFixturesForFavouriteTeams() throws Exception {
-        reactiveBackgroundResultsFetcher = new ReactiveBackgroundResultsFetcher(apiService, favouriteService, notificationService);
-        liveResultsInteractor = new LiveResultsInteractor(apiService, null, reactiveBackgroundResultsFetcher);
-
         // Mock fixtures
         final FixtureList fixtureList = GsonUtils.GSON.fromJson(testHelper.getTextContentFromResourcesFile("fixtures" +
                 ".json"), FixtureList.class);
@@ -97,6 +104,34 @@ public class LiveResultsInteractorTest {
                         && fixtures.get(0).getTeamAway() != null
                         && fixtures.get(0).getTeamAway().getTeamName().equals("Angel Kjoseski")
                 );
+            }
+        });
+    }
+
+    @Test
+    public void getAllCurrentlyRunningFixturesForFavouriteTeamsWhenNoFavourite() throws Exception {
+        // Mock fixtures
+        final FixtureList fixtureList = GsonUtils.GSON.fromJson(testHelper.getTextContentFromResourcesFile("fixtures" +
+                ".json"), FixtureList.class);
+        when(apiService.getAllFixtures()).thenReturn(Observable.just(fixtureList));
+
+        // Mock favourite teams
+        TeamList allTeamList = GsonUtils.GSON
+                .fromJson(testHelper.getTextContentFromResourcesFile("all_teams.json"), TeamList.class);
+        TeamList favouriteTeamList = new TeamList(new ArrayList<Team>());
+        when(favouriteService.getFavouriteTeams()).thenReturn(Observable.just(favouriteTeamList.getTeams()));
+        when(apiService.getAllTeams()).thenReturn(Observable.just(allTeamList));
+
+        // Test interactor
+        TestObserver<List<Fixture>> testObserver = liveResultsInteractor
+                .getAllCurrentlyRunningFixturesForFavouriteTeams()
+                .test();
+        testObserver.awaitTerminalEvent(2, TimeUnit.SECONDS);
+        testObserver.assertSubscribed();
+        testObserver.assertError(new Predicate<Throwable>() {
+            @Override
+            public boolean test(Throwable throwable) throws Exception {
+                return "No live fixtures right now.".equals(throwable.getMessage());
             }
         });
     }

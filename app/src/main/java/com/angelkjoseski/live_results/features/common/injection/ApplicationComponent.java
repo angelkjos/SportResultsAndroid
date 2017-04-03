@@ -13,6 +13,7 @@ import com.angelkjoseski.live_results.features.live.view.LiveResultsFragment;
 import com.angelkjoseski.live_results.features.teams.view.AllTeamsFragment;
 import com.angelkjoseski.live_results.features.upcomingfixtures.view.UpcomingFixturesFragment;
 import com.angelkjoseski.live_results.features.teams.Teams;
+import com.angelkjoseski.live_results.service.LiveResultsFetcherService;
 
 import javax.inject.Singleton;
 
@@ -39,6 +40,12 @@ public interface ApplicationComponent {
      * @param sportResultsApplication instance of application
      */
     void inject(SportResultsApplication sportResultsApplication);
+
+    // Region - Injections:
+
+    void inject(LiveResultsFetcherService liveResultsFetcherService);
+
+    // End-Region
 
     /**
      * Returns a new Dagger 2 component that inherits all dependencies from this component and

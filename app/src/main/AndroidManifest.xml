@@ -11,6 +11,7 @@
         android:supportsRtl="true"
         android:name=".SportResultsApplication"
         android:theme="@style/AppTheme">
+
         <activity
             android:name=".features.common.view.SportResultsActivity"
             android:label="@string/app_name">
@@ -20,6 +21,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+      <service android:name=".service.LiveResultsFetcherService"/>
+
     </application>
 
 </manifest>

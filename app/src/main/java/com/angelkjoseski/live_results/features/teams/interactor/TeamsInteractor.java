@@ -1,10 +1,14 @@
 package com.angelkjoseski.live_results.features.teams.interactor;
 
+import android.content.Context;
+import android.content.Intent;
+
 import com.angelkjoseski.live_results.features.common.interactor.InteractorTemplate;
 import com.angelkjoseski.live_results.features.teams.Teams;
 import com.angelkjoseski.live_results.model.Team;
 import com.angelkjoseski.live_results.model.TeamList;
 import com.angelkjoseski.live_results.service.FavouriteService;
+import com.angelkjoseski.live_results.service.LiveResultsFetcherService;
 import com.angelkjoseski.live_results.service.networking.ApiService;
 
 import java.util.List;
@@ -24,6 +28,7 @@ import retrofit2.Retrofit;
 public class TeamsInteractor extends InteractorTemplate<TeamList> implements Teams.Interactor {
 
     private FavouriteService favouriteService;
+    private Context context;
 
     /**
      * Constructor for injecting REST API service and Retrofit instance.
@@ -32,9 +37,10 @@ public class TeamsInteractor extends InteractorTemplate<TeamList> implements Tea
      * @param retrofit   singleton Retrofit instance
      */
     @Inject
-    public TeamsInteractor(ApiService apiService, Retrofit retrofit, FavouriteService favouriteService) {
+    public TeamsInteractor(ApiService apiService, Retrofit retrofit, FavouriteService favouriteService, Context context) {
         super(apiService, retrofit);
         this.favouriteService = favouriteService;
+        this.context = context;
     }
 
 
@@ -74,5 +80,6 @@ public class TeamsInteractor extends InteractorTemplate<TeamList> implements Tea
     @Override
     public void addTeamToFavourites(Team team) {
         favouriteService.storeFavourite(team);
+        context.startService(new Intent(context, LiveResultsFetcherService.class));
     }
 }

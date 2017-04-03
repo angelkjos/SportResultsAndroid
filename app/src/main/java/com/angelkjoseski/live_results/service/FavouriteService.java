@@ -24,4 +24,9 @@ public interface FavouriteService {
      */
     void storeFavourite(Team team);
 
+    /**
+    * Will check if the current user has already save some team to favourites.
+    * @return true if he has, false otherwise.
+    */
+    boolean hasFavourites();
 }

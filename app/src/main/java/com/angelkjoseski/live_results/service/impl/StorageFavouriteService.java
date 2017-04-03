@@ -45,6 +45,11 @@ public class StorageFavouriteService implements FavouriteService {
                 .apply();
     }
 
+    @Override
+    public boolean hasFavourites() {
+        return getFavouriteTeamsAsList().size() > 0;
+    }
+
     private List<Team> getFavouriteTeamsAsList() {
         String json = PreferenceManager
                 .getDefaultSharedPreferences(SportResultsApplication.getInstance())

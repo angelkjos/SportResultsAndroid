@@ -6,7 +6,7 @@ android {
     buildToolsVersion '25.0.2'
     defaultConfig {
         applicationId "com.angelkjoseski.live_results"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -28,8 +28,9 @@ android {
             buildConfigField "String", "SERVER_URL", '"https://angelkjos.github.io/test/unwire/"'
         }
     }
+
     lintOptions {
-        abortOnError false
+        ignore 'InvalidPackage', 'UseCompoundDrawables', 'GoogleAppIndexingWarning', 'ContentDescription'
     }
 }
 

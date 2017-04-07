@@ -1,5 +1,12 @@
 apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
 apply from: '../config/quality.gradle'
+
+retrolambda {
+    javaVersion JavaVersion.VERSION_1_7
+    defaultMethods false
+    incremental true
+}
 
 android {
     compileSdkVersion 25
@@ -31,6 +38,11 @@ android {
 
     lintOptions {
         ignore 'InvalidPackage', 'UseCompoundDrawables', 'GoogleAppIndexingWarning', 'ContentDescription'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 

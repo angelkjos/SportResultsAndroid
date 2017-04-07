@@ -1,7 +1,5 @@
 package com.angelkjoseski.live_results.features.teams.interactor;
 
-import android.content.Context;
-
 import com.angelkjoseski.live_results.features.common.interactor.InteractorTemplate;
 import com.angelkjoseski.live_results.features.teams.Teams;
 import com.angelkjoseski.live_results.model.Team;
@@ -16,7 +14,6 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 
@@ -26,7 +23,6 @@ import retrofit2.Retrofit;
 public class TeamsInteractor extends InteractorTemplate<TeamList> implements Teams.Interactor {
 
     private FavouriteService favouriteService;
-    private Context context;
 
     /**
      * Constructor for injecting REST API service and Retrofit instance.
@@ -35,11 +31,9 @@ public class TeamsInteractor extends InteractorTemplate<TeamList> implements Tea
      * @param retrofit   singleton Retrofit instance
      */
     @Inject
-    public TeamsInteractor(ApiService apiService, Retrofit retrofit, FavouriteService favouriteService, Context
-            context) {
+    public TeamsInteractor(ApiService apiService, Retrofit retrofit, FavouriteService favouriteService) {
         super(apiService, retrofit);
         this.favouriteService = favouriteService;
-        this.context = context;
     }
 
 
@@ -47,31 +41,23 @@ public class TeamsInteractor extends InteractorTemplate<TeamList> implements Tea
     public Observable<List<Team>> getAllTeams() {
         return apiService.getAllTeams()
                 .subscribeOn(Schedulers.io())
-                .flatMap(new Function<TeamList, ObservableSource<Team>>() {
-                    @Override
-                    public ObservableSource<Team> apply(TeamList teamList) throws Exception {
-                        return Observable.fromIterable(teamList.getTeams());
-                    }
-                })
-                .flatMap(new Function<Team, ObservableSource<Team>>() {
-                    @Override
-                    public ObservableSource<Team> apply(final Team team) throws Exception {
-                        return favouriteService.getFavouriteTeams()
-                                .flatMap(new Function<List<Team>, ObservableSource<Team>>() {
-                                    @Override
-                                    public ObservableSource<Team> apply(List<Team> favouriteTeams) throws Exception {
-                                        team.setFavourite(favouriteTeams.contains(team));
-                                        return Observable.just(team);
-                                    }
-                                });
-                    }
-                })
+                .flatMap(teamList -> Observable.fromIterable(teamList.getTeams()))
+                .flatMap(team -> setFavouriteFlagToTeam(team))
                 .toList()
                 .toObservable()
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    @Override
+  private ObservableSource<Team> setFavouriteFlagToTeam(final Team team) {
+      return favouriteService.getFavouriteTeams()
+                  .flatMap(favouriteTeams -> {
+                          team.setFavourite(favouriteTeams.contains(team));
+                          return Observable.just(team);
+                      }
+                  );
+  }
+
+  @Override
     public void addTeamToFavourites(Team team) {
         favouriteService.storeFavourite(team);
     }

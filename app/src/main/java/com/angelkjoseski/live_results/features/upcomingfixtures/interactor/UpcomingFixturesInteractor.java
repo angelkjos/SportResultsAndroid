@@ -15,10 +15,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Function;
-import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 
@@ -45,18 +42,8 @@ public class UpcomingFixturesInteractor extends InteractorTemplate<FixtureList> 
     public Observable<List<Fixture>> getAllUpcomingFixtures() {
         return apiService.getAllFixtures()
                 .subscribeOn(Schedulers.io())
-                .flatMap(new Function<FixtureList, ObservableSource<Fixture>>() {
-                    @Override
-                    public ObservableSource<Fixture> apply(FixtureList fixtures) throws Exception {
-                        return Observable.fromIterable(fixtures.getFixtures());
-                    }
-                })
-                .filter(new Predicate<Fixture>() {
-                    @Override
-                    public boolean test(Fixture fixture) throws Exception {
-                        return new Date().before(fixture.getStartTime());
-                    }
-                })
+                .flatMap(fixtureList -> Observable.fromIterable(fixtureList.getFixtures()))
+                .filter(fixture -> new Date().before(fixture.getStartTime()))
                 .toList()
                 .toObservable()
                 .compose(new FillFixturesWithTeamDetailsTransformer(apiService))
@@ -67,19 +54,9 @@ public class UpcomingFixturesInteractor extends InteractorTemplate<FixtureList> 
     public Observable<List<Fixture>> getUpcomingFixturesForFavouriteTeams() {
         return apiService.getAllFixtures()
                 .subscribeOn(Schedulers.io())
-                .map(new Function<FixtureList, List<Fixture>>() {
-                    @Override
-                    public List<Fixture> apply(FixtureList fixtureList) throws Exception {
-                        return fixtureList.getFixtures();
-                    }
-                })
+                .map(fixtureList -> fixtureList.getFixtures())
                 .compose(new FixturesBasedOnFavouritesTransformer(favouriteService))
-                .filter(new Predicate<Fixture>() {
-                    @Override
-                    public boolean test(Fixture fixture) throws Exception {
-                        return new Date().before(fixture.getStartTime());
-                    }
-                })
+                .filter(fixture -> new Date().before(fixture.getStartTime()))
                 .toList()
                 .toObservable()
                 .compose(new FillFixturesWithTeamDetailsTransformer(apiService))
